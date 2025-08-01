@@ -1,0 +1,4 @@
+pre-commit:
+  scrits:
+  "message-checker.sh":
+    runner: bash
