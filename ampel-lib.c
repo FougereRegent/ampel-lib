@@ -14,6 +14,7 @@ static const short PRODUCT_ID = 0x0008;
 struct libampel_ampel_led {
   libusb_context *context;
   libusb_device_handle *handle;
+  struct libampel_state state;
 };
 
 int init(libampel_ampel_led *ampel_led) {
@@ -47,11 +48,23 @@ int init(libampel_ampel_led *ampel_led) {
   return SUCCESS;
 }
 
-int enable_led(LED_COLOR led_color) { return OK; }
+int libampel_apply_value(libampel_ampel_led *ampel_led,
+                         struct libampel_state state) {
+  const unsigned char padding = 0x00;
+  const int endpoint = 0x02;
+  int write_byte = ERROR_CODE;
 
-int disable_led(LED_COLOR led_color) { return OK; }
+  unsigned char data[] = {padding, state.color, state.state};
 
-int get_last_state() { return OK; }
+  libusb_interrupt_transfer(ampel_led->handle, endpoint, data, sizeof(data),
+                            &write_byte, 0);
+
+  return write_byte >= 0;
+}
+
+struct libampel_state get_last_state(libampel_ampel_led *ampel_led) {
+  return ampel_led->state;
+}
 
 char *libampel_strerror(int error_code) { return NULL; }
 

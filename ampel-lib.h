@@ -22,9 +22,11 @@ struct libampel_state {
   LED_COLOR color;
 };
 
-int libampel_enable_led(LED_COLOR);
-int libample_disable_led(LED_COLOR);
-
-char *libampel_strerror(int);
+int init(libampel_ampel_led *ampel_led);
+int libampel_apply_value(libampel_ampel_led *ampel_led,
+                         struct libampel_state state);
+char *libampel_strerror(int error_code);
+struct libampel_state libampel_get_last_led(libampel_ampel_led *ampel_led);
+void release_ampel(libampel_ampel_led *ampel_led);
 
 #endif
