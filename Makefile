@@ -1,0 +1,3 @@
+CC=gcc
+DEBUG_OPTS=-g
+RELEASE_OPTS=-o3
