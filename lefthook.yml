@@ -1,4 +1,4 @@
 commit-msg:
-  scrits:
+  scripts:
   "message-checker.sh":
     runner: bash
