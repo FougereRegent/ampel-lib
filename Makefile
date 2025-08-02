@@ -18,8 +18,7 @@ $(OBJDIR)/ampel-lib.o: ampel-lib.c
 	$(CC) $(CFLAGS) -c $< -o $@ -lusb-1.0
 
 clean:
-	rm -rf $(OBJDIR) $(LIBDIR)
-
+	rm -rf $(OBJDIR) $(LIBDIR) ./**/*.out
 
 example: $(LIBNAME) example/main.c
 	$(CC) $(CFLAGS) example/main.c -o bin.out -L $(LIBDIR) -l:ampelled.a -lusb-1.0

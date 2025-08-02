@@ -1,8 +1,12 @@
 #ifndef AMPEL_LIB_H
 #define AMPEL_LIB_H
 
-#define ERROR_CODE -1
+/*ERROR CODE*/
 #define OK 0
+#define ERROR_INIT -1
+#define ERROR_NOTFOUND -2
+#define ERROR_USB_TRANSFER -3
+#define ERROR_ACCESS -4
 
 typedef enum {
   RED = 0x10,
