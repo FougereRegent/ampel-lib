@@ -2,3 +2,8 @@ commit-msg:
   scripts:
     "message-checker.sh":
       runner: bash
+
+checkout:
+  commands:
+    clean:
+      run: make clean
