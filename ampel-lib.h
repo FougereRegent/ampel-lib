@@ -11,7 +11,7 @@ typedef enum {
 } LED_COLOR;
 
 typedef enum {
-  OFF = 0x00,
+  OFF = 0x0,
   ON = 0x01,
 } LED_STATE;
 
@@ -22,7 +22,7 @@ struct libampel_state {
   LED_COLOR color;
 };
 
-int init(libampel_ampel_led *ampel_led);
+int init(libampel_ampel_led **ampel_led);
 int libampel_apply_value(libampel_ampel_led *ampel_led,
                          struct libampel_state state);
 char *libampel_strerror(int error_code);

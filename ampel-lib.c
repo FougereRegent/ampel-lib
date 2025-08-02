@@ -17,34 +17,36 @@ struct libampel_ampel_led {
   struct libampel_state state;
 };
 
-int init(libampel_ampel_led *ampel_led) {
+int init(libampel_ampel_led **ampel_led) {
   libusb_context *context = NULL;
   libusb_device_handle *handle = NULL;
   int error_code;
 
-  if ((error_code = libusb_init_context(&context, NULL, 0)) < 0) {
-    perror("Cannot initialize conntext");
+  if ((error_code = libusb_init(&context)) < 0) {
     return ERROR_CODE;
   }
 
   if ((handle = libusb_open_device_with_vid_pid(context, VENDOR, PRODUCT_ID)) ==
       NULL) {
-    perror("Cannot found the usb product");
     free(context);
     return ERROR_NOFOUND;
   }
 
-  if ((error_code = libusb_set_auto_detach_kernel_driver(handle, 1)) < 0) {
-    perror("Cannot set auto detach");
+  if (libusb_kernel_driver_active(handle, 0) == 1 &&
+      (error_code = libusb_detach_kernel_driver(handle, 0)) < 0) {
+    printf("Erreur %d\”", error_code);
     libusb_close(handle);
     free(context);
     return ERROR_CODE;
   }
 
-  ampel_led = malloc(sizeof(struct libampel_ampel_led));
+  *ampel_led = malloc(sizeof(struct libampel_ampel_led));
+  if (ampel_led == NULL) {
+    return ERROR_CODE;
+  }
 
-  ampel_led->context = context;
-  ampel_led->handle = handle;
+  (*ampel_led)->context = context;
+  (*ampel_led)->handle = handle;
   return SUCCESS;
 }
 
@@ -55,9 +57,11 @@ int libampel_apply_value(libampel_ampel_led *ampel_led,
   int write_byte = ERROR_CODE;
 
   unsigned char data[] = {padding, state.color, state.state};
+  printf("%02x , %02x, %02x\n", padding, state.color, state.state);
 
   libusb_interrupt_transfer(ampel_led->handle, endpoint, data, sizeof(data),
                             &write_byte, 0);
+  printf("%d\n", write_byte);
 
   return write_byte >= 0;
 }
