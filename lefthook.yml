@@ -9,6 +9,6 @@ checkout:
       run: make clean
 
 pre-commit:
-  commands:
-    reset-header:
-      run: git restore ./ampel-lib.h
+  scripts:
+    "check-changes-header.sh":
+      runner: bash
