@@ -14,10 +14,6 @@ LibAmpel is a C library for controlling a USB LED device (Ampel) via `libusb-1.0
 - [API Usage](#api-usage)  
 - [Usage Example](#usage-example)  
 - [Error Codes and Handling](#error-codes-and-handling)  
-- [Cleanup](#cleanup)  
-- [Contributing](#contributing)  
-- [License](#license)  
-
 ---
 
 ## Features
@@ -31,35 +27,46 @@ LibAmpel is a C library for controlling a USB LED device (Ampel) via `libusb-1.0
 
 ## Dependencies
 
-- [libusb-1.0](https://libusb.info/) (cross-platform USB library)  
+- [libusb-1.0](https://libusb.info/) (cross-platform USB library)
 
 ### Installation on Debian/Ubuntu
 
 ```bash
-sudo apt-get install libusb-1.0-0-dev
+  sudo apt-get install libusb-1.0-0-dev
+
+```
 
 ## Installation
 
+```bash
   git clone https://github.com/FougereRegent/ampel-lib.git
   cd ampel-lib
+```
 
-## Compilation
+# Compilation
 
 ## Compile the static library
 
+```bash
   make
-
+```
 ## Compile the example
 
+```bash
   make example
+```
 
 ## Clean
 
+```bash
   make clean
+```
 
 ## Project Integration
 
+```bash
   gcc -I./include -L./lib -lled -lusb-1.0 <your_source.c> -o your_program
+```
 
 # API
 
@@ -81,4 +88,5 @@ sudo apt-get install libusb-1.0-0-dev
 | `ERROR_NOTFOUND` (-2)     | USB device not found         |
 | `ERROR_USB_TRANSFER` (-3) | USB transfer error           |
 | `ERROR_ACCESS` (-4)       | USB port access denied       |
+
 
