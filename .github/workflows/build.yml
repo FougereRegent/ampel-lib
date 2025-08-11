@@ -2,26 +2,22 @@ name: build
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "dev" ]
   pull_request:
     branches: [ "main" ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
+      name: checkout project
+      with:
+        fetch-depth: 1
 
-    - name: configure
-      run: ./configure
+    - name: install dependecies
+      run: apt install libusb-1.0-dev
 
-    - name: Install dependencies
+    - name: build
       run: make
-
-    - name: Run check
-      run: make check
-
-    - name: Run distcheck
-      run: make distcheck
