@@ -21,7 +21,9 @@ jobs:
       run: make
 
     - name: set version
-      run: set "s/X_BUILD/${GITHUB_RUN_ID}/" -i Makefile
+      run: |
+        set "s/X_BUILD/${{ github.run_id }}/" -i Makefile;
+        cat Makefile
     
     - name: packing
       run: make pack
