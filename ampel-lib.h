@@ -1,6 +1,10 @@
 #ifndef AMPEL_LIB_H
 #define AMPEL_LIB_H
 
+#define LIBLED_VERSION_MAJOR = X_MAJOR
+#define LIBLED_VERSION_MINOR = X_MINOR
+#define LIBLED_VERSION_BUILD = X_BUILD
+
 /*ERROR CODE*/
 #define OK 0
 #define ERROR_INIT -1
