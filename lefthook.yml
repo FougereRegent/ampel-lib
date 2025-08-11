@@ -7,3 +7,8 @@ checkout:
   commands:
     clean:
       run: make clean
+
+pre-commit:
+  scripts:
+    "check-changes-header.sh":
+      runner: bash
