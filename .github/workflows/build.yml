@@ -17,7 +17,7 @@ jobs:
         fetch-depth: 1
 
     - name: install dependecies
-      run: sudo apt install libusb-1.0.0-dev
+      run: sudo apt install libusb-1.0-0-dev
 
     - name: build
       run: make
