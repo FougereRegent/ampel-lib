@@ -7,7 +7,16 @@ LIBDIR = lib
 
 LIBNAME = $(LIBDIR)/libled.a
 
-all: $(LIBNAME)
+
+#Version
+
+LIBLED_VERSION_MAJOR = 0
+LIBLED_VERSION_MINOR = 1
+LIBLED_VERSION_BUILD = X_BUILD
+
+VERSION = v$(LIBLED_VERSION_MAJOR).$(LIBLED_VERSION_MINOR).$(LIBLED_VERSION_BUILD)
+
+all: $(LIBNAME) version
 
 $(LIBNAME): $(OBJDIR)/led.o
 	mkdir -p $(LIBDIR)
@@ -17,8 +26,14 @@ $(OBJDIR)/led.o: ampel-lib.c
 	mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@ -I/usr/include/lusb-1.0
 
+version: ampel-lib.h
+	sed "s/X_MAJOR/$(LIBLED_VERSION_MAJOR)/g" -i $<
+	sed "s/X_MINOR/$(LIBLED_VERSION_MINOR)/g" -i $<
+	sed "s/X_BUILD/$(LIBLED_VERSION_BUILD)/g" -i $<
+
 clean:
 	rm -rf $(OBJDIR) $(LIBDIR) ./**/*.out
 
 example: $(LIBNAME)
 	$(CC) $(CFLAGS) example/main.c -o bin.out -Llib -lled  -lusb-1.0
+
