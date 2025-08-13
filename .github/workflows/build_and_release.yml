@@ -4,6 +4,8 @@ on:
   push:
     branches: [ "main" ]
 
+env:
+  VERSION: v${{ vars.VERSION_MAJOR }}.${{ vars.VERSION_MINOR }}.${{ github.run_number }}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,6 +25,8 @@ jobs:
     - name: set version
       run: |
         sed "s/X_BUILD/${{ github.run_number }}/g" -i Makefile && cat Makefile
+        sed "s/X_MAJOR/${{ vars.VERSION_MAJOR }}/g" -i Makefile && cat Makefile
+        sed "s/X_MINOR/${{ vars.VERSION_MINOR }}/g" -i Makefile && cat Makefile
     
     - name: packing
       run: make pack
@@ -33,8 +37,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: v0.1.${{ github.run_number }}
-        release_name: libampled
+        tag_name: ${{ env.VERSION }}
+        release_name: libampled_${{ env.VERSION }}
         draft: true
         prerelease: false
 
