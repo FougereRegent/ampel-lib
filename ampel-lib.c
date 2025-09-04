@@ -62,7 +62,7 @@ int libampel_apply_value(libampel_ampel_led *ampel_led,
   return write_byte >= 0 ? 0 : write_byte;
 }
 
-struct libampel_state get_last_state(libampel_ampel_led *ampel_led) {
+struct libampel_state libampel_get_last_led(libampel_ampel_led *ampel_led) {
   return ampel_led->state;
 }
 
