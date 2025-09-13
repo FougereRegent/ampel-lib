@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -g
+CFLAGS = -Wall -Wextra -O2
 AR = ar
 ARFLAGS = rcs
 OBJDIR = obj
