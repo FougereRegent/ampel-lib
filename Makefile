@@ -6,6 +6,8 @@ OBJDIR = obj
 LIBDIR = lib
 
 LIBNAME = $(LIBDIR)/libled.a
+PKGCONFIG_CFLAGS = $(shell pkg-config --cflags libusb-1.0)
+PKGCONFIG_LIBS = $(shell pkg-config --libs libusb-1.0)
 
 
 #Version
@@ -24,8 +26,7 @@ $(LIBNAME): $(OBJDIR)/led.o
 
 $(OBJDIR)/led.o: ampel-lib.c
 	mkdir -p $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@ -I/usr/include/lusb-1.0
-
+	$(CC) $(CFLAGS) $(PKGCONFIG_CFLAGS) -c $< -o $@ 
 $(LIBLED_VERSION): ampel-lib.h
 	sed "s/X_MAJOR/$(LIBLED_VERSION_MAJOR)/g" -i $<
 	sed "s/X_MINOR/$(LIBLED_VERSION_MINOR)/g" -i $<
@@ -40,5 +41,5 @@ clean:
 	rm -rf $(OBJDIR) $(LIBDIR) ./**/*.out
 
 example: $(LIBNAME)
-	$(CC) $(CFLAGS) example/main.c -o bin.out -Llib -lled  -lusb-1.0
+	$(CC) $(CFLAGS) example/main.c -o bin.out -Llib -lled $(PKGCONFIG_LIBS)
 
