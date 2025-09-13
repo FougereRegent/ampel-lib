@@ -1,10 +1,8 @@
 #include "ampel-lib.h"
 #include <libusb-1.0/libusb.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
 
 #define ERROR_MSG_INIT "libusb initialization error"
 #define ERROR_MSG_NOTFOUND "Device not found"
@@ -31,17 +29,18 @@ int init(libampel_ampel_led **ampel_led) {
 
   if ((handle = libusb_open_device_with_vid_pid(context, VENDOR, PRODUCT_ID)) ==
       NULL) {
-    free(context);
+    libusb_exit(context);
     return ERROR_NOTFOUND;
   }
 
+#ifndef _WIN32
   if (libusb_kernel_driver_active(handle, 0) == 1 &&
       (error_code = libusb_detach_kernel_driver(handle, 0)) < 0) {
     libusb_close(handle);
-    free(context);
+    libusb_exit(context);
     return ERROR_ACCESS;
   }
-
+#endif /* ifndef _WIN32 */
   *ampel_led = malloc(sizeof(struct libampel_ampel_led));
   if (ampel_led == NULL) {
     return ERROR_INIT;
@@ -96,6 +95,6 @@ char *libampel_strerror(int error_code) {
 
 void release_ampel(libampel_ampel_led *ampel_led) {
   libusb_close(ampel_led->handle);
-  free(ampel_led->context);
+  libusb_exit(ampel_led->context);
   free(ampel_led);
 }
