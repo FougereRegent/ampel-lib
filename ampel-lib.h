@@ -13,6 +13,8 @@
 #define ERROR_USB_TRANSFER -3
 #define ERROR_ACCESS -4
 
+#include <stdbool.h>
+
 typedef enum {
   RED = 0x10,
   ORANGE = 0x11,
@@ -31,11 +33,18 @@ struct libampel_state {
   LED_COLOR color;
 };
 
-int init(libampel_ampel_led **ampel_led);
-int libampel_apply_value(libampel_ampel_led *ampel_led,
-                         struct libampel_state state);
-char *libampel_strerror(int error_code);
-struct libampel_state libampel_get_last_led(libampel_ampel_led *ampel_led);
-void release_ampel(libampel_ampel_led *ampel_led);
+struct libampel_actual_state {
+  bool red_led_activated;
+  bool orange_led_activated;
+  bool green_led_activated;
+};
+
+extern int init(libampel_ampel_led **ampel_led);
+extern int libampel_apply_value(libampel_ampel_led *ampel_led,
+                                struct libampel_state state);
+extern char *libampel_strerror(int error_code);
+extern struct libampel_actual_state
+libampel_get_last_led(libampel_ampel_led *ampel_led);
+extern void release_ampel(libampel_ampel_led *ampel_led);
 
 #endif
