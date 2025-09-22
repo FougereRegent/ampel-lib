@@ -75,5 +75,13 @@ int main(int argc, char **argv) {
     return -1;
   }
 
+  struct libampel_actual_state result = libampel_get_last_led(led);
+  printf("red led : %s\n\
+  orange led : %s\n\
+  green led : %s\n",
+         result.red_led_activated ? "ON" : "OFF",
+         result.orange_led_activated ? "ON" : "OFF",
+         result.green_led_activated ? "ON" : "OFF");
+
   return 0;
 }

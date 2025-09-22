@@ -1,6 +1,9 @@
 #include "ampel-lib.h"
 #include <libusb-1.0/libusb.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/types.h>
 
 #define ERROR_MSG_INIT "libusb initialization error"
@@ -14,7 +17,7 @@ static const short PRODUCT_ID = 0x0008;
 struct libampel_ampel_led {
   libusb_context *context;
   libusb_device_handle *handle;
-  struct libampel_state state;
+  struct libampel_actual_state state;
 };
 
 int init(libampel_ampel_led **ampel_led) {
@@ -46,6 +49,9 @@ int init(libampel_ampel_led **ampel_led) {
 
   (*ampel_led)->context = context;
   (*ampel_led)->handle = handle;
+  (*ampel_led)->state.red_led_activated = false;
+  (*ampel_led)->state.orange_led_activated = false;
+  (*ampel_led)->state.green_led_activated = false;
   return OK;
 }
 
@@ -59,10 +65,17 @@ int libampel_apply_value(libampel_ampel_led *ampel_led,
 
   libusb_interrupt_transfer(ampel_led->handle, endpoint, data, sizeof(data),
                             &write_byte, 0);
+  if (write_byte >= 0) {
+    bool *struct_tab = (bool *)&(ampel_led->state.red_led_activated);
+    int index = (state.color ^ RED);
+    int result = ((0x0F + (state.state << 4)) & state.color) == state.color;
+    struct_tab[index] = result;
+  }
   return write_byte >= 0 ? 0 : write_byte;
 }
 
-struct libampel_state get_last_state(libampel_ampel_led *ampel_led) {
+struct libampel_actual_state
+libampel_get_last_led(libampel_ampel_led *ampel_led) {
   return ampel_led->state;
 }
 
